@@ -18,16 +18,16 @@ public class LUserDAOImpl implements UserDAO{
 		String sql = "SELECT * FROM user_info where useremail=?";
 		PreparedStatement pstmt = null;
 		DBConnect dbc = null;
-		System.out.println(user.getEmailAddress()+"HELLO");
+		//System.out.println(user.getEmailAddress()+"HELLO");
 		
 		try {
 			dbc = new DBConnect();
-			System.out.println("step 2.1");
-			System.out.println(dbc);
+			//System.out.println("step 2.1");
+			//System.out.println(dbc);
 			try {
 				pstmt = dbc.getConnection().prepareStatement(sql);
-				System.out.println("step 2.2");
-				System.out.println(pstmt);
+				//System.out.println("step 2.2");
+				//System.out.println(pstmt);
 				if(pstmt==null) {System.out.println("null pointer!!!!!!");}
 				pstmt.setString(1,user.getEmailAddress());
 				
