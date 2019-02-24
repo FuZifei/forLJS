@@ -40,8 +40,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <h4>Name: <%=u.getUsername() %></h4><br>
     <h4>E-mail address: <%=u.getEmailAddress() %> </h4><br>
-    <a href="changePwd.jsp?param=<%=username %>"><b>Change your password</b></a>
-    <br>
-    <a href="WelcomeUser.jsp?param=<%=username %>"><b>Go to the Home Page</b></a>
+    <a href="changePwd.jsp?param=<%=username %>">Change your password</a>
+    <br><br>
+    <a href="WelcomeUser.jsp?param=<%=username %>">Go to the Home Page</a>
+    <br><br>
+    <form method="get" action="logout">
+    <a href="Welcome.jsp">Log out</a>
+    </form>
   </body>
 </html>

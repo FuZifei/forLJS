@@ -24,11 +24,11 @@ public class DBTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		/*Connection con;
+		Connection con;
 		String driver = "com.mysql.cj.jdbc.Driver";
-		String DBURL = "jdbc:mysql://127.0.0.1:3306/filesystemdb?serverTimezone=GMT";
+		String DBURL = "jdbc:mysql://106.15.186.234:3306/DMSYS?serverTimezone=GMT";
 		String DBUSER = "root";
-		String DBPASSWORD = "feifei960728";
+		String DBPASSWORD = "123456";
 		
 		
 		
@@ -40,7 +40,7 @@ public class DBTest {
 			System.out.println(con);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("Error!!!!!");}*/
+			System.out.println("Error!!!!!");}
 		
 		//String rusername = "fuzifei";
 		//String rpassword = "123";
