@@ -8,11 +8,11 @@ import java.sql.DriverManager;
 public class DBConnect {
 	Connection con;
 	String driver = "com.mysql.cj.jdbc.Driver";
-	String DBURL = "jdbc:mysql://127.0.0.1:3306/filesystemdb?serverTimezone=GMT";
+	String DBURL = "jdbc:mysql://127.0.0.1:3306/DMSYS?serverTimezone=GMT";
 	//local DB: 127.0.0.1:3306/filesystemdb
 	//remote server : 106.15.186.234:3306/DMSYS
 	String DBUSER = "root";
-	String DBPASSWORD = "feifei960728";//123456//feifei960728
+	String DBPASSWORD = "";//123456//feifei960728
 	
 	
 	public DBConnect(){
