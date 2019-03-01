@@ -75,6 +75,6 @@ public class RegisterServlet extends HttpServlet{
 			res.sendRedirect("./userinformation.jsp");
 		}
 		else {res.sendRedirect("./Rerror.jsp");}
-	};
+	}
 
 }
