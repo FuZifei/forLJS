@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'uploaddemo.jsp' starting page</title>
+    <title>Upload File</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -19,6 +19,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+		<style type="text/css">body{
+		background-color:#E0EEE0;
+		text-align:center;
+		font-family:"Arial"
+	}
+	</style>
 
   </head>
   
@@ -26,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 File name<input type="file" name="file"/><br/>
      <input type="submit" value="submit"/><br/>
 </form>
-<h3>test2.txt</h3>
+<h3>test2.txt</h3><br>
 <a href="${pageContext.request.contextPath}/fileDownLoad">Download</a>
   </body>
 </html>

@@ -20,14 +20,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		
-	</style>
+    <style type="text/css">body{
+        background-color:#E0EEE0;
+        text-align:center;
+        font-family:"Arial"
+    }
+    </style>
 
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
     <br>
     <h2>Your Account</h2>
     <br><br>
@@ -41,10 +43,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <h4>Name: <%=u.getUsername() %></h4><br>
     <h4>E-mail address: <%=u.getEmailAddress() %> </h4><br>
     
-    <input type="button" name="changepwd" value="Change Password" onclick="window.location.href('./changeP')"/>
+    <input type="button" name="changepwd" value="Change Password" onclick="window.location.href='./changeP'"/>
     <br><br>
     
-    <input type="button" name="homepage" value="Homepage" onclick="window.location.href('./WelcomeUser')"/>
+    <input type="button" name="homepage" value="Homepage" onclick="window.location.href='./WelcomeUser'"/>
     <br><br>
     
     <form method="get" action="userlogout">

@@ -18,31 +18,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		.div-left{float:left; background:"#008B8B";width:100%; height:25%}
-		.i{text-align:center; width:100%;height:20%}
-	</style>
-	
+
+	 <style type="text/css">
+   body{
+    background-color:#E0EEE0;
+    text-align:center;
+    font-family:"Arial"
+
+    .wdiv-left{float:left; background:"#008B8B";width:100%; height:25%}
+    .wi{text-align:center; width:100%;height:20%}
+  }
+  </style>
 	
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
   
-  	<div class="div-left"> <h1><font color="white">Welcome to the DMSYS</font></h1></div>
+  	<div class="wdiv-left"> <h1><font color="white">Welcome to the DMSYS</font></h1></div>
  
     <br><br><br>
 
     
     <br>
-    <div class="i"><h2>Please</h2></div>
-    <div class="i">
-    <input type="button" name="login" value="LOG IN" onclick="window.location.href('./loginpage')"/>&nbsp;
+    <div class="wi"><h2>Please</h2></div>
+    <div class="wi">
+    <input type="button" name="login" value="LOG IN" onclick="window.location.href='./loginpage'"/>&nbsp;
     </div>
-    <div class="i">
+    <div class="wi">
     <h2>or</h2> &nbsp;</div>
-    <div class="i">
-    <input type="button" name="register" value="REGISTER" onclick="window.location.href('./registerpage')"/>
+    <div class="wi">
+    <input type="button" name="register" value="REGISTER" onclick="window.location.href='./registerpage'"/>
    	</div>
   </body>
 </html>

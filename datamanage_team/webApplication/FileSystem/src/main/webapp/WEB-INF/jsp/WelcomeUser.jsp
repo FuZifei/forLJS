@@ -20,22 +20,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		.div-left{float:left; background:"#008B8B";width:100%; height:25%;display:flex; justify-content:center; aligh-items:center;}
-		.i{text-align:center; width:100%;height:22%; display:flex; justify-content:center; aligh-items:center;}
-	</style>
+<style type="text/css">
+   body{
+    background-color:#E0EEE0;
+    text-align:center;
+    font-family:"Arial"
+
+    .wudiv-left{float:left; background:"#008B8B";width:100%; height:25%;display:flex; justify-content:center; aligh-items:center;}
+	.wui{text-align:center; width:100%;height:22%; display:flex; justify-content:center; aligh-items:center;}
+
+</style>
 
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
     
     <% String username = (String)session.getAttribute("username");%>
-    <div class="div-left">
+    <div class="wudiv-left">
     <h1><font color="white">Welcome, <%= username %></font></h1>
     </div>
     
-    <div class="i">
+    <div class="wui">
     
     <nav>
 	<a href="./uploadfile">File</a> |
@@ -47,13 +52,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</nav>
 	</div>
 	
-	<div class="i">
+	<div class="wui">
 	<br><br><br>
 	<h4>Communication</h4>
 	</div>
 	
 	<br>
-	<div class="i">
+	<div class="wui">
 	<nav>
 	<a href="">Add</a> |
 	<a href="">Share</a> |

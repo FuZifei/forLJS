@@ -12,6 +12,7 @@
        <mvc:default-servlet-handler /> 
        <!-- 启动注解驱动 SpringMVC 功能 -->
        <mvc:annotation-driven />
+       <mvc:resources location="/css/" mapping="/css/**"/>
 
        <!-- 配置视图解析器解析路径 -->
        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">

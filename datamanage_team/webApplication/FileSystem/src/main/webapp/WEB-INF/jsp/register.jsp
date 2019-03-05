@@ -19,10 +19,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		
+	<style type="text/css">body{
+		background-color:#E0EEE0;
+		text-align:center;
+		font-family:"Arial"
+	}
 	</style>
 	
 	<script type="text/javascript">
@@ -61,17 +62,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
 
   <form method="post" action="userregister">
   		
-		<label><h2>Please enter the following information:</h2></label><br><br><br>
+		<h2><label>Please enter the following information:</label></h2><br><br><br>
     	<label>Your E-mail: </label>&nbsp;&nbsp;<input id="useremail" name="useremail" type="text"/><br><br>
 		<label>Your name: </label>&nbsp;&nbsp;<input id="username" name="username"/><br><br>
     	<label>Password: </label>&nbsp;&nbsp;<input id="password" name="password" type="password"/><br><br>
     	
 		<input type="submit" name="submit" value="submit" onclick="return check()"/>
-    	<input type="button" name="back" value="Back" onclick="window.location.href('./Welcome')"/>
+    	<input type="button" name="back" value="Back" onclick="window.location.href='./Welcome'"/>
     
     </form>
  
