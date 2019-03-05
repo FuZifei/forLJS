@@ -19,26 +19,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	
-	<style>
-		body{text-align:center; font-family:"Arial"}
-	</style>
+	<style type="text/css">body{
+        background-color:#E0EEE0;
+        text-align:center;
+        font-family:"Arial"
+    }
+    </style>
+
 	
 
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
     <br>
     
     <form method="post" action="changePassword">
-    	<p><h2>Please enter your email:</h2></p>
+    	<h2>Please enter your email:</h2>
     	<input type="text" name="useremail"><br>
-    	<p><h2>Please confirm your password:</h2></p><br>
+    	<h2>Please confirm your password:</h2><br>
     	<input type="password" name="oripassword"/><br>
     	<h2>Please enter your new password:</h2><br>
     	<p>new password: <input type="password" name="newpassword"/></p><br>
     	<p>confirm password: <input type="password" name="cnewpassword"/></p><br>
-    	<input type="submit" name="submit" value="submit"><br>
+    	<input type="submit" name="submit" value="submit">
+    	<input type="button" name="back" value="back" onclick="window.location.href='./userinformation'"/>
+    	<br>
+    	
     </form>
     
   </body>

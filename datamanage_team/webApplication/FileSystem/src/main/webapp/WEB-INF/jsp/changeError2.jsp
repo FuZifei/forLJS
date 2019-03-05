@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'error.jsp' starting page</title>
+    <title>ERROR</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -19,19 +19,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		
+	<style type="text/css">body{
+		background-color:#E0EEE0;
+		text-align:center;
+		font-family:"Arial"
+	}
 	</style>
 
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
     <h1>ERROR</h1>
-    <p>Fail to change the password.</br>
+    Fail to change the password.<br>
     <form action="./error">
-	<input type="button" value="turn to the prevoius page!" name="reset" onClick="window.location.href('./changePwd')" />
+	<input type="button" value="turn to the prevoius page!" name="reset" onClick="window.location.href='./changePwd'" />
 	</form>
-    </p>
+    
   </body>
 </html>

@@ -19,11 +19,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	
-	<style>
-		body{text-align:center; font-family:"Arial"}
-		
+	<style type="text/css">body{
+		background-color:#E0EEE0;
+		text-align:center;
+		font-family:"Arial"
+	}
 	</style>
+
 
 	<script>
 		function check(){
@@ -53,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
   </head>
   
-  <body bgcolor="#E0EEE0">
+  <body>
    <br><br>
    <h1>Login</h1>
    <br>
@@ -63,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <input type="text"  name="useremail" id="useremail"/><br><br>
     <label>Password:</label>&nbsp;&nbsp;
     <input type="password"  name="password" id="password"/><br><br>    
-    <input type="SUBMIT" value="Login"  name="submit" onclick="return check()"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" value="Back" onclick="window.location.href('./Welcome')"/>
+    <input type="SUBMIT" value="Login"  name="submit" onclick="return check()"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" value="Back" onclick="window.location.href='./Welcome'"/>
    
    </form>
    </div>
