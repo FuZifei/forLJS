@@ -100,13 +100,15 @@
 			
 			//Check email format
 			var myforms = document.forms;
-			var myemail = myforms[0].useremail.value;
-			var myReg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+			var myname = myforms[0].username.value;
+			var mypwd = myforms[0].password.value;
+			var myReg1 = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+			var myReg2 = /\~|\！|\!|\@|\#|\$|\^|\￥|\%|\…|\&|\*|\(|\)|\—|\+|\{|\}|\“|\”|\《|\》|\?|\？|\<|\>|\'|\"/g;
 			
-			if(myReg.test(myemail)){
+			if(myReg1.test(myname)&&myReg2.test(mypwd)){
 				return true;}
 			else{
-				alert("Wrong email format.");
+				alert("Wrong format.");
 				return false;
 			}
 		return true;
