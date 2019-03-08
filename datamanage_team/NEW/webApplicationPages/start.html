@@ -38,6 +38,8 @@
             padding: 7px 9px;
         }
     </style>  
+
+
 </head>
 <body>
 
@@ -85,7 +87,30 @@
 	}
 	
 	function checkValue() {
-		return $("#username").val() != "" && $("#password").val() != "";
+		//Check not empty:
+			if(document.getElementById('username').value==''){
+				alert("Please enter your email as your username.");
+				return false;
+			}
+			
+			if(document.getElementById('password').value==''){
+				alert("Please set your password.");
+				return false;
+			}
+			
+			//Check email format
+			var myforms = document.forms;
+			var myemail = myforms[0].useremail.value;
+			var myReg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+			
+			if(myReg.test(myemail)){
+				return true;}
+			else{
+				alert("Wrong email format.");
+				return false;
+			}
+		return true;
+		//return $("#username").val() != "" && $("#password").val() != "";
 	}
 </script>
 
