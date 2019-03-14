@@ -90,7 +90,7 @@
             font-weight: 600;
             color:#749dcf;
         }
-        .poptop a.close{
+        .poptop a.close a.fclose{
             position: absolute;
             right:0;
             top:0;
@@ -141,7 +141,7 @@
             outline: none;
             background: #DDDDDD;
         }
-        /*点击输入框之后图标颜色改变*/
+        
         .popcon .group input:focus+i{
             color: #749dcf;
         }
@@ -211,7 +211,9 @@
     &nbsp;&nbsp;
     <button type="button" class="btn btn-primary" id="btn_clear">clear</button>
     &nbsp;&nbsp;
-    <button type="button" class="btn btn-primary" id="btn_new">new file</button>
+    <button type="button" class="btn btn-primary" id="btn_private">private space</button>
+    &nbsp;&nbsp;
+    <button type="button" class="btn btn-primary" id="btn_upload">upload file</button>
 </div>
 
 <br>
@@ -248,77 +250,132 @@
 </div>
 
 
-<div class="newFile" style="display: none">
+<div class="uploadfile" style="display: none">
     <div class="graybox" ></div>
     <div class="popbox">
         <div class="poptop">
-            <h3 id="fh3">Edit File</h3>
-            <a href="#" class="close" id="fClose"></a>
+            <h3>Upload File</h3>
+            <a href="#" class="fclose"></a>
         </div>
         <div class="popcon">
             <div>
                 <div class="group">
-                    <input id="fName" type="text" placeholder="name">
-                    <i class="fa fa-user"></i>
+                    <input type="hidden" name="file_base64" id="file_base64">
+				    <input type="file" id="fileup" value="Select File" id="file1"> 
+				    &nbsp;&nbsp;
+				    <input type="checkbox" id="cx"> private
+				    <i class="fa fa-lock"></i>
                 </div>
-                <div class="group">
-                    <input id="fContent" type="text" placeholder="content">
-                    <i class="fa fa-lock"></i>
-                </div>
+                
             </div>
         </div>
         <div class="divbtn clearfix">
-            <a href="#" class="btn" id="fCancel">CANCEL</a>
-            <a href="javascript:void(0);" onclick="changePwd()" class="btn ok" id="fSave">SAVE</a>
+            <a href="#" class="btn" id="fcancel">CANCEL</a>
+            <a href="javascript:void(0);" onclick="upload()" class="btn ok" id="ok">OK</a>
         </div>
     </div>
 </div>
+
+<!-- <form onsubmit="return false;">
+    <input type="hidden" name="file_base64" id="file_base64">
+    <input type="file" id="fileup">
+    <input type="submit" value="submit" onclick="upload()">
+</form> -->
+
+
  
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script> 
 <script type="text/javascript">
-        $(function () {
-            $('#changePwd').click(function () {
-            	$(":password").val('');
-                $('.mypop').show();
-            });
-            $('.close,#cancel').click(function () {
-                $('.mypop').hide();
-            })
-        })
-        
-        function changePwd() {
-			var op=$("#op").val();
-			var np1=$("#np1").val();
-			var np2=$("#np2").val();
-			if(op===""||np1==""||np2==""){
+		$("#fileup").change(function(){
+		    var v = $(this).val();
+		    var reader = new FileReader();
+		    reader.readAsDataURL(this.files[0]);
+		    reader.onload = function(e){
+		        console.log(e.target.result);
+		        $('#file_base64').val(e.target.result);
+		    };
+		});
+		
+		function upload() {
+			if($("#fileup").val() == undefined || $("#fileup").val() == ""){
 				return;
 			}
-			if(np1!=np2){
-				alert("The two new passwords do not match");
+			var pri = 0;
+			if($('#cx').prop('checked')){
+				pri = 1;
 			}
-			
-			var json={ "op" : op, "np" : np1};
-			$.post("../system/UserServlet?action=changePwd", json, function(data) {
+			var Business = $("#fileup").val().split("\\");
+			var fileName =  Business[Business.length-1]
+			fileName = (fileName);
+			var json={ "fname" : fileName, "fcontent" : $("#file_base64").val(), "pri" : pri};
+			$.post("../system/FileServlet?action=upload", json, function(data) {
 				var obj = JSON.parse(data);
 				if(obj.ret === "0"){
-					alert("change password successfully");
-					$('.mypop').hide();
+					alert("file upload successfully");
+					 $('.uploadfile').hide();
+					if(pri == 0) {
+						search();
+					} else {
+						priSearch();
+					}
 				} else {
 					alert(obj.msg);
 				}
 			});
 		}
-        
-        function quit() {
-        	$.post("../system/UserServlet?action=quit", null, function(data) {
-				var obj = JSON.parse(data);
-				if(obj.ret === "0"){
-					window.location.href="../start.html";
-				} else {
-					alert(obj.msg);
-				}
-			});
+
+
+       $(function () {
+           $('#changePwd').click(function () {
+           	$(":password").val('');
+               $('.mypop').show();
+           });
+           $('.close,#cancel').click(function () {
+               $('.mypop').hide();
+           })
+           
+           $('#btn_upload').click(function () {
+           	$("#file1").val('');
+               $('.uploadfile').show();
+           });
+           $('.fclose,#fcancel').click(function () {
+               $('.uploadfile').hide();
+           })
+       })
+       
+       function changePwd() {
+		var op=$("#op").val();
+		var np1=$("#np1").val();
+		var np2=$("#np2").val();
+		if(op===""||np1==""||np2==""){
+			return;
 		}
+		if(np1!=np2){
+			alert("The two new passwords do not match");
+		}
+		
+		var json={ "op" : op, "np" : np1};
+		$.post("../system/UserServlet?action=changePwd", json, function(data) {
+			var obj = JSON.parse(data);
+			if(obj.ret === "0"){
+				alert("change password successfully");
+				$('.mypop').hide();
+			} else {
+				alert(obj.msg);
+			}
+		});
+	}
+       
+    function quit() {
+      	$.post("../system/UserServlet?action=quit", null, function(data) {
+			var obj = JSON.parse(data);
+			if(obj.ret === "0"){
+				window.location.href="../start.html";
+			} else {
+				alert(obj.msg);
+			}
+		});
+	}
 </script>
 
 <script type="text/javascript" src="../js/bootstrap.js"></script>
