@@ -1,1 +1,0 @@
-these are android layouts.
