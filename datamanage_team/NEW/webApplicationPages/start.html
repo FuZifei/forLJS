@@ -38,8 +38,6 @@
             padding: 7px 9px;
         }
     </style>  
-
-
 </head>
 <body>
 
@@ -63,7 +61,7 @@
 			$.post("StartServlet?action=login", json, function(data) {
 				var obj = JSON.parse(data);
 				if(obj.ret === "0"){
-					window.location.href="home.html";
+					window.location.href="sys/home.html";
 				} else {
 					alert(obj.msg);
 				}
@@ -87,32 +85,7 @@
 	}
 	
 	function checkValue() {
-		//Check not empty:
-			if(document.getElementById('username').value==''){
-				alert("Please enter your email as your username.");
-				return false;
-			}
-			
-			if(document.getElementById('password').value==''){
-				alert("Please set your password.");
-				return false;
-			}
-			
-			//Check email format
-			var myforms = document.forms;
-			var myname = myforms[0].username.value;
-			var mypwd = myforms[0].password.value;
-			var myReg1 = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
-			var myReg2 = /\~|\！|\!|\@|\#|\$|\^|\￥|\%|\…|\&|\*|\(|\)|\—|\+|\{|\}|\“|\”|\《|\》|\?|\？|\<|\>|\'|\"/g;
-			
-			if(myReg1.test(myname)&&myReg2.test(mypwd)){
-				return true;}
-			else{
-				alert("Wrong format.");
-				return false;
-			}
-		return true;
-		//return $("#username").val() != "" && $("#password").val() != "";
+		return $("#username").val() != "" && $("#password").val() != "";
 	}
 </script>
 
