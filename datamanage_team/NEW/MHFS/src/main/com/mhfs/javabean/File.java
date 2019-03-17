@@ -14,5 +14,5 @@ public class File {
 	private String uName;
 	private String name;
 	private String content;
-	private String pwd;
+	private int pri;
 }

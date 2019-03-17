@@ -25,6 +25,17 @@ public class FileService {
 		return false;
 	}
 
+	public boolean updateFile(File file) {
+		return fileDao.updateFileBy(file);
+	}
 
+	public List<File> searchBy(String name) {
+		
+		return fileDao.priSearch(name);
+	}
+
+	public File download(String fid) {
+		return fileDao.getFileBy(fid);
+	}
 
 }

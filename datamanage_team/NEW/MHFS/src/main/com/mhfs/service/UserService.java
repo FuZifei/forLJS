@@ -5,7 +5,8 @@ import com.mhfs.dao.impl.UserDaoImpl;
 import com.mhfs.javabean.User;
 
 public class UserService {
-	private static String reject = "";
+	private static String register = "";
+	private static String changePwd = "";
 
 	UserDao userDao = new UserDaoImpl();
 
@@ -14,11 +15,21 @@ public class UserService {
 	}
 
 	public boolean register(User user) {
-		synchronized (reject) {
+		synchronized (register) {
 			if (!userDao.checkNameExist(user.getName())) {
 				return userDao.addUser(user);
 			}
 			return false;
 		}
+	}
+
+	public boolean changePwd(String name, String op, String np) {
+		synchronized (changePwd) {
+			if (userDao.verifyUser(new User(name, op))) {
+				return userDao.changePwd(name, np);
+			}
+			return false;
+		}
+
 	}
 }
