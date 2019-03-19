@@ -14,4 +14,8 @@ public interface FileDao {
 	List<File> getFileListBy(String uName, String keyWord);
 
 	String getUnameBy(String fId);
+
+	List<File> priSearch(String name);
+
+	File getFileBy(String fid);
 }

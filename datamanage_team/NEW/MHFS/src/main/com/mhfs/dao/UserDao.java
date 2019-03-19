@@ -3,15 +3,15 @@ package com.mhfs.dao;
 import com.mhfs.javabean.User;
 
 public interface UserDao {
-	// add an user and see whether it is successful
+	// 添加一条用户信息，返回操作是否成功
 	boolean addUser(User user);
 
-	// change user password
-	boolean changePwd(User user);
+	// 修改用户密码，返回操作是否成功
+	boolean changePwd(String name, String np);
 
-	// whether verification successful
+	// 验证用户，返回操作是否成功
 	boolean verifyUser(User user);
 
-	// if the username exist
+	// 检查用户名是否存在
 	boolean checkNameExist(String username);
 }

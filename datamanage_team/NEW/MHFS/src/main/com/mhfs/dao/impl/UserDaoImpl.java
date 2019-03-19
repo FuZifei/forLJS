@@ -42,9 +42,37 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean changePwd(User user) {
+	public boolean changePwd(String name, String np) {
+		boolean res = false;
 
-		return false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.CHANGE_PWD);
+			preparedStatement.setString(1, np);
+			preparedStatement.setString(2, name);
+			if (preparedStatement.executeUpdate() == 1) {
+				res = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+
+			} catch (SQLException e) {
+			}
+		}
+		return res;
 	}
 
 	@Override
