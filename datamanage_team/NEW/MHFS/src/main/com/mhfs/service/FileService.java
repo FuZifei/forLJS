@@ -16,17 +16,12 @@ public class FileService {
 	public boolean addFile(File file) {
 		return fileDao.addFile(file);
 	}
-
-	public boolean deleteFile(String fId, String uName) {
-		String username = fileDao.getUnameBy(fId);
-		if (username.equals(uName)) {
-			return fileDao.deleteFile(fId);
-		}
-		return false;
-	}
-
+	
 	public boolean updateFile(File file) {
 		return fileDao.updateFileBy(file);
+	}
+	public boolean existFile(String fname, int pri) {
+		return fileDao.existFile(fname, pri);
 	}
 
 	public List<File> searchBy(String name) {
@@ -34,8 +29,8 @@ public class FileService {
 		return fileDao.priSearch(name);
 	}
 
-	public File download(String fid) {
-		return fileDao.getFileBy(fid);
+	public File download(String fname, int pri) {
+		return fileDao.getFileBy(fname, pri);
 	}
 
 }

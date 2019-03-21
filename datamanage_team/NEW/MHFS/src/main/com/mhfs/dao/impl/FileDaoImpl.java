@@ -20,8 +20,9 @@ public class FileDaoImpl implements FileDao {
 		Connection connection = JdbcUtil.getConection();
 		PreparedStatement preparedStatement = null;
 		try {
+			System.out.println("uName: "+file.getuName()+"file name: "+file.getName());
 			preparedStatement = connection.prepareStatement(Sql.ADD_FILE);
-			preparedStatement.setString(1, file.getUName());
+			preparedStatement.setString(1, file.getuName());
 			preparedStatement.setString(2, file.getName());
 			preparedStatement.setString(3, file.getContent());
 			preparedStatement.setInt(4, file.getPri());
@@ -44,15 +45,19 @@ public class FileDaoImpl implements FileDao {
 		return res;
 	}
 
+
 	@Override
-	public boolean deleteFile(String fid) {
+	public boolean updateFileBy(File file) {
 		boolean res = false;
 
 		Connection connection = JdbcUtil.getConection();
 		PreparedStatement preparedStatement = null;
 		try {
-			preparedStatement = connection.prepareStatement(Sql.DELETE_FILE);
-			preparedStatement.setInt(1, Integer.parseInt(fid));
+			preparedStatement = connection.prepareStatement(Sql.UPDATE_FILE_BY_FNAME);
+			preparedStatement.setString(1, file.getuName());
+			preparedStatement.setString(2, file.getContent());
+			preparedStatement.setInt(3, file.getPri());
+			preparedStatement.setString(4, file.getName());
 			if (preparedStatement.executeUpdate() != 0) {
 				res = true;
 			}
@@ -71,19 +76,16 @@ public class FileDaoImpl implements FileDao {
 		}
 		return res;
 	}
-
-	@Override
-	public boolean updateFileBy(File file) {
-		boolean res = false;
-
+	public boolean existFile(String fname, int pri) {
+		boolean res=false;
 		Connection connection = JdbcUtil.getConection();
 		PreparedStatement preparedStatement = null;
 		try {
-			preparedStatement = connection.prepareStatement(Sql.UPDATE_FILE_BY_ID);
-			preparedStatement.setString(1, file.getName());
-			preparedStatement.setString(2, file.getContent());
-			preparedStatement.setInt(3, file.getId());
-			if (preparedStatement.executeUpdate() != 0) {
+			preparedStatement = connection.prepareStatement(Sql.SEARCH_FILE_BY_NAME);
+			preparedStatement.setString(1, fname);
+			preparedStatement.setInt(2, pri);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
 				res = true;
 			}
 		} catch (SQLException e) {
@@ -116,7 +118,7 @@ public class FileDaoImpl implements FileDao {
 			preparedStatement.setString(2, "%" + keyWord + "%");
 			rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				File file = new File(rs.getInt(1), rs.getString(2), rs.getString(3), null, 0);
+				File file = new File(rs.getString(1), rs.getString(2), null, 0);
 				files.add(file);
 			}
 		} catch (SQLException e) {
@@ -140,15 +142,15 @@ public class FileDaoImpl implements FileDao {
 	}
 
 	@Override
-	public String getUnameBy(String fId) {
+	public String getUnameBy(String fname) {
 		Connection connection = JdbcUtil.getConection();
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 
 		String name = null;
 		try {
-			preparedStatement = connection.prepareStatement(Sql.GET_UNMAE_BY_FID);
-			preparedStatement.setInt(1, Integer.parseInt(fId));
+			preparedStatement = connection.prepareStatement(Sql.GET_UNMAE_BY_FNAME);
+			preparedStatement.setString(1, fname);
 			rs = preparedStatement.executeQuery();
 			if (rs.next()) {
 				name = rs.getString("u_name");
@@ -186,7 +188,7 @@ public class FileDaoImpl implements FileDao {
 			preparedStatement.setString(1, name);
 			rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				File file = new File(rs.getInt(1), rs.getString(2), rs.getString(3), null, 0);
+				File file = new File(rs.getString(1), rs.getString(2), null, 0);
 				files.add(file);
 			}
 		} catch (SQLException e) {
@@ -210,18 +212,19 @@ public class FileDaoImpl implements FileDao {
 	}
 
 	@Override
-	public File getFileBy(String fid) {
+	public File getFileBy(String fname, int pri) {
 		Connection connection = JdbcUtil.getConection();
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 
 		File file = null;
 		try {
-			preparedStatement = connection.prepareStatement(Sql.SEARCH_FILE_BY_ID);
-			preparedStatement.setInt(1, Integer.parseInt(fid));
+			preparedStatement = connection.prepareStatement(Sql.SEARCH_FILE_BY_NAME);
+			preparedStatement.setString(1, fname);
+			preparedStatement.setInt(2, pri);
 			rs = preparedStatement.executeQuery();
 			if (rs.next()) {
-				file = new File(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				file = new File( rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
