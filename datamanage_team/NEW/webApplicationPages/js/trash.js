@@ -75,7 +75,7 @@ function show() {
 
 function totalDel(source){
 	var className = source.getAttribute("class");
-	var name =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
+	var id =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
 	
 	var json={"id" : id};
 	$.post("../system/FileServlet?action=totallyDel", json, function(data) {
