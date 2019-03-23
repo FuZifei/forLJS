@@ -193,11 +193,11 @@
 </head>
 <body>
 <div style="text-align:center; height: 100px;margin:0 auto; width: 80%">
-	<h1>Welcome To MHFS</h1>
+	<h1>MHFS Recycle bin</h1>
 	<div style="float: right;">
-		<a id="changePwd" href="javascript:void(0);">change the password</a>
+		<!-- <a id="changePwd" href="javascript:void(0);">change the password</a> -->
 		&nbsp;&nbsp; 
-		<a id="quit" href="javascript:void(0);" onclick="quit()">quit</a>
+		<a id="quit" href="home.html">back</a>
 	</div>
 </div>
 <div class="form-inline definewidth m20" style="text-align:center;">  
@@ -211,14 +211,14 @@
     &nbsp;&nbsp;
     <button type="button" class="btn btn-primary" id="btn_clear">clear</button>
     &nbsp;&nbsp;
-    <button type="button" class="btn btn-primary" id="btn_private">private space</button>
+    <!-- <button type="button" class="btn btn-primary" id="btn_private">private space</button>
     &nbsp;&nbsp;
-    <button type="button" class="btn btn-primary" id="btn_upload">upload file</button>
+   <button type="button" class="btn btn-primary" id="btn_upload">upload file</button> -->
 </div>
 
 <br>
 <table class="table table-bordered table-hover definewidth m10" id="tab" style="text-align:center;width: 80%"></table>
-
+<!--  
 <div class="mypop" style="display: none">
     <div class="graybox" ></div>
     <div class="popbox">
@@ -248,8 +248,8 @@
         </div>
     </div>
 </div>
-
-
+-->
+<!--  
 <div class="uploadfile" style="display: none">
     <div class="graybox" ></div>
     <div class="popbox">
@@ -275,7 +275,7 @@
         </div>
     </div>
 </div>
-
+-->
 <!-- <form onsubmit="return false;">
     <input type="hidden" name="file_base64" id="file_base64">
     <input type="file" id="fileup">
@@ -285,103 +285,10 @@
 
  
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script> 
-<script type="text/javascript">
-		$("#fileup").change(function(){
-		    var v = $(this).val();
-		    var reader = new FileReader();
-		    reader.readAsDataURL(this.files[0]);
-		    reader.onload = function(e){
-		        console.log(e.target.result);
-		        $('#file_base64').val(e.target.result);
-		    };
-		});
-		
-		function upload() {
-			if($("#fileup").val() == undefined || $("#fileup").val() == ""){
-				return;
-			}
-			var pri = 0;
-			if($('#cx').prop('checked')){
-				pri = 1;
-			}
-			var Business = $("#fileup").val().split("\\");
-			var fileName =  Business[Business.length-1]
-			fileName = (fileName);
-			var json={ "fname" : fileName, "fcontent" : $("#file_base64").val(), "pri" : pri};
-			$.post("../system/FileServlet?action=upload", json, function(data) {
-				var obj = JSON.parse(data);
-				if(obj.ret === "0"){
-					alert("file upload successfully");
-					 $('.uploadfile').hide();
-					if(pri == 0) {
-						search();
-					} else {
-						priSearch();
-					}
-				} else {
-					alert(obj.msg);
-				}
-			});
-		}
-
-
-       $(function () {
-           $('#changePwd').click(function () {
-           	$(":password").val('');
-               $('.mypop').show();
-           });
-           $('.close,#cancel').click(function () {
-               $('.mypop').hide();
-           })
-           
-           $('#btn_upload').click(function () {
-           	$("#file1").val('');
-               $('.uploadfile').show();
-           });
-           $('.fclose,#fcancel').click(function () {
-               $('.uploadfile').hide();
-           })
-       })
-       
-       function changePwd() {
-		var op=$("#op").val();
-		var np1=$("#np1").val();
-		var np2=$("#np2").val();
-		if(op===""||np1==""||np2==""){
-			return;
-		}
-		if(np1!=np2){
-			alert("The two new passwords do not match");
-		}
-		
-		var json={ "op" : op, "np" : np1};
-		$.post("../system/UserServlet?action=changePwd", json, function(data) {
-			var obj = JSON.parse(data);
-			if(obj.ret === "0"){
-				alert("change password successfully");
-				$('.mypop').hide();
-			} else {
-				alert(obj.msg);
-			}
-		});
-	}
-       
-    function quit() {
-      	$.post("../system/UserServlet?action=quit", null, function(data) {
-			var obj = JSON.parse(data);
-			if(obj.ret === "0"){
-				window.location.href="../start.html";
-			} else {
-				alert(obj.msg);
-			}
-		});
-	}
-</script>
-
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/ckform.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript" src="../js/home.js"></script>
+<script type="text/javascript" src="../js/trash.js"></script>
 
 </body>
 </html>
