@@ -2,6 +2,8 @@ package com.mhfs.service;
 
 import java.util.List;
 
+import org.json.JSONArray;
+
 import com.mhfs.dao.FileDao;
 import com.mhfs.dao.impl.FileDaoImpl;
 import com.mhfs.javabean.File;
@@ -13,8 +15,25 @@ public class FileService {
 		return fileDao.getFileListBy(username, keyword);
 	}
 
+	public JSONArray searchTrash(String username, String keyword){
+		return fileDao.getTrashListBy(username, keyword);
+	}
 	public boolean addFile(File file) {
 		return fileDao.addFile(file);
+	}
+
+	public boolean deleteFile(String fname, int pri) {
+			return fileDao.deleteFile(fname, pri);
+	}
+
+	public boolean movetoTrash(String fname, int pri) {
+		return fileDao.movetoTrash(fname, pri);
+	}
+	
+	
+	
+	public boolean totallyDel(String fID) {
+		return fileDao.totallyDel(fID);
 	}
 	
 	public boolean updateFile(File file) {
@@ -32,5 +51,7 @@ public class FileService {
 	public File download(String fname, int pri) {
 		return fileDao.getFileBy(fname, pri);
 	}
+	
 
+	
 }

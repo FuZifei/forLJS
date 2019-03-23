@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.mhfs.dao.FileDao;
 import com.mhfs.dao.Sql;
 import com.mhfs.javabean.File;
@@ -45,6 +48,97 @@ public class FileDaoImpl implements FileDao {
 		return res;
 	}
 
+	@Override
+	public boolean deleteFile(String fname, int pri) {
+		boolean res = false;
+
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.DELETE_FILE);
+			preparedStatement.setString(1, fname);
+			preparedStatement.setInt(2, pri);
+			if (preparedStatement.executeUpdate() != 0) {
+				res = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return res;
+	}
+	
+	
+
+
+	@Override
+	public boolean movetoTrash(String fname, int pri) {
+		boolean res = false;
+
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.MOVE_TO_TRASH);
+			preparedStatement.setString(1, fname);
+			preparedStatement.setInt(2, pri);
+			if (preparedStatement.executeUpdate() != 0) {
+				res = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return res;
+		
+	}
+
+	
+	
+	@Override
+	public boolean totallyDel(String fID) {
+		boolean res =false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.TOTALLY_DEL);
+			preparedStatement.setInt(1, Integer.parseInt(fID));
+			if (preparedStatement.executeUpdate() != 0) {
+				res=true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		System.out.println("res of totallyDel: "+res);
+		return res;
+	}
 
 	@Override
 	public boolean updateFileBy(File file) {
@@ -139,6 +233,47 @@ public class FileDaoImpl implements FileDao {
 			}
 		}
 		return files;
+	}
+
+	@Override
+	public JSONArray getTrashListBy(String uName, String keyWord) {
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		JSONArray ret = new JSONArray();
+
+		try {
+			preparedStatement = connection.prepareStatement(Sql.SEARCH_TRASH);
+			preparedStatement.setString(1, "%" + uName + "%");
+			preparedStatement.setString(2, "%" + keyWord + "%");
+			rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", rs.getObject(1));
+				jo.put("uName", rs.getObject(2));
+				jo.put("fName", rs.getObject(3));
+				jo.put("pri", rs.getObject(4));
+				ret.put(jo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+
+			} catch (SQLException e) {
+			}
+		}
+		
+		return ret;
 	}
 
 	@Override
@@ -245,5 +380,11 @@ public class FileDaoImpl implements FileDao {
 		}
 		return file;
 	}
+
+	
+
+
+
+	
 
 }
