@@ -33,8 +33,10 @@ public class FileServlet extends HttpServlet {
 			String name = (String) req.getSession().getAttribute("name");
 			handlePriSearch(ret, name);
 		} else if (action.equals("download")) {
-			String fid = req.getParameter("fid");
-			File file = fileService.download(fid);
+			String fname = req.getParameter("fname");
+			String pri = req.getParameter("pri");
+			System.out.println("PRI:  "+pri);
+			File file = fileService.download(fname, Integer.parseInt(pri));
 			JSONObject jo = new JSONObject();
 			jo.put("fName", file.getName());
 			jo.put("fContent", file.getContent());
@@ -45,7 +47,24 @@ public class FileServlet extends HttpServlet {
 			String fName = req.getParameter("fname");
 			String fContent = req.getParameter("fcontent");
 			String pri = req.getParameter("pri");
-			File file = new File(-1, (String) req.getSession().getAttribute("name"), fName, fContent,
+			if(fileService.existFile(fName,Integer.parseInt(pri))) {
+				File file = new File((String) req.getSession().getAttribute("name"), fName, fContent,
+						Integer.parseInt(pri));
+				boolean flag = fileService.updateFile(file);
+				JSONObject jsonObject = new JSONObject();
+				if (flag) {
+					jsonObject.put("ret", "2");
+					jsonObject.put("msg", "Update success!");
+				} else {
+					jsonObject.put("ret", "1");
+					jsonObject.put("msg", "Update Failed");
+				}
+				resp.getWriter().write(jsonObject.toString());
+				return;
+			}
+			
+			else {
+				File file = new File((String) req.getSession().getAttribute("name"), fName, fContent,
 					Integer.parseInt(pri));
 			boolean flag = fileService.addFile(file);
 			JSONObject jsonObject = new JSONObject();
@@ -54,34 +73,22 @@ public class FileServlet extends HttpServlet {
 				jsonObject.put("msg", "");
 			} else {
 				jsonObject.put("ret", "1");
-				jsonObject.put("msg", "error");
+				jsonObject.put("msg", "Upload Failed");
 			}
+			  
 			resp.getWriter().write(jsonObject.toString());
 			return;
-		} else if (action.equals("delete")) {
-			String fId = req.getParameter("fId");
-			String uName = (String) req.getSession().getAttribute("name");
-			boolean flag = fileService.deleteFile(fId, uName);
-			JSONObject jsonObject = new JSONObject();
-			if (flag) {
-				jsonObject.put("ret", "0");
-				jsonObject.put("msg", "");
-			} else {
-				jsonObject.put("ret", "1");
-				jsonObject.put("msg", "Without permission");
 			}
-			resp.getWriter().write(jsonObject.toString());
-			return;
-		}
-		resp.getWriter().write(ret.toString());
+			
+		} 
 	}
 
 	private void handlePriSearch(JSONArray ret, String name) {
 		List<File> files = fileService.searchBy(name);
 		for (File file : files) {
 			JSONObject jo = new JSONObject();
-			jo.put("id", file.getId());
-			jo.put("uName", file.getUName());
+			//jo.put("id", file.getId());
+			jo.put("uName", file.getuName());
 			jo.put("fName", file.getName());
 			jo.put("fContent", file.getContent());
 			ret.put(jo);
@@ -92,8 +99,9 @@ public class FileServlet extends HttpServlet {
 		List<File> files = fileService.searchBy(username, keyword);
 		for (File file : files) {
 			JSONObject jo = new JSONObject();
-			jo.put("id", file.getId());
-			jo.put("uName", file.getUName());
+		//	jo.put("id", file.getId());
+			System.out.println("fname: "+file.getName());
+			jo.put("uName", file.getuName());
 			jo.put("fName", file.getName());
 			jo.put("fContent", file.getContent());
 			ret.put(jo);
