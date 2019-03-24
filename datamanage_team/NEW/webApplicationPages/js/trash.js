@@ -75,7 +75,7 @@ function show() {
 
 function totalDel(source){
 	var className = source.getAttribute("class");
-	var name =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
+	var id =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
 	
 	var json={"id" : id};
 	$.post("../system/FileServlet?action=totallyDel", json, function(data) {
@@ -94,7 +94,7 @@ function totalDel(source){
 
 function recover(source){
 	var className = source.getAttribute("class");
-	var name =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
+	var id =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
 	
 	var json={"name" : name,"pri" : pri,"id" : id};
 	$.post("../system/FileServlet?action=recover",json,function(data){
