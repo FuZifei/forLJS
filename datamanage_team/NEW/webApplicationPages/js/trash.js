@@ -48,7 +48,7 @@ function show() {
 				"<td>" + sumData[i].uName + "</td>" +
 				"<td>" +
 				"<a class='" + i + "' href = 'javascript:void(0);' onclick ='totalDel(this)'>delete</a>" +
-				"</td>"
+				"<a class='"+ i +"'href = 'javascript:void(0);' onclick='recover(this)'>recover</a></td>"
 			"</tr>";
 		$("#tab").append(s);
 	}
@@ -75,7 +75,7 @@ function show() {
 
 function totalDel(source){
 	var className = source.getAttribute("class");
-	var id =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
+	var name =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
 	
 	var json={"id" : id};
 	$.post("../system/FileServlet?action=totallyDel", json, function(data) {
@@ -92,7 +92,24 @@ function totalDel(source){
 	});
 }
 
-
+function recover(source){
+	var className = source.getAttribute("class");
+	var name =  document.getElementById("tab").rows[parseInt(className) + 1].cells[0].innerHTML;
+	
+	var json={"name" : name,"pri" : pri,"id" : id};
+	$.post("../system/FileServlet?action=recover",json,function(data){
+		var obj = JSON.parse(data);
+		if(obj.ret ==="0"){
+			alert("Recover successfully.");
+			$('.newFile').hide();
+			if(flag == 1){
+				search();
+			}
+		}else{
+			alert(obj.msg);
+		}
+	});
+}
 
 
 
