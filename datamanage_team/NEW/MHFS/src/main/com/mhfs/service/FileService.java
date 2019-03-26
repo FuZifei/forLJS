@@ -30,7 +30,9 @@ public class FileService {
 		return fileDao.movetoTrash(fname, pri);
 	}
 	
-	
+	public boolean recoverFile(String fID) {
+		return fileDao.recoverFile(fID);
+	}
 	
 	public boolean totallyDel(String fID) {
 		return fileDao.totallyDel(fID);
@@ -52,6 +54,20 @@ public class FileService {
 		return fileDao.getFileBy(fname, pri);
 	}
 	
-
 	
+	public boolean gainlock(String fname) {
+		return fileDao.gainlock(fname);
+	}
+
+	public boolean releaselock(String fname) {
+		return fileDao.releaselock(fname);
+	}
+	
+	public boolean gainTrashlock(String fID) {
+		return fileDao.gainTrashlock(fID);
+	}
+	
+	public boolean releaseTrashlock(String fID) {
+		return fileDao.releaseTrashlock(fID);
+	}
 }

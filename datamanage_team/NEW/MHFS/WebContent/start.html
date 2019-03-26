@@ -85,7 +85,27 @@
 	}
 	
 	function checkValue() {
-		return $("#username").val() != "" && $("#password").val() != "";
+		if(document.getElementById('username').value==''){
+				alert("Please enter your email as your username.");
+				return false;
+			}
+			
+			if(document.getElementById('password').value==''){
+				alert("Please set your password.");
+				return false;
+			}
+			
+			//Check email format
+			
+			var myname = document.getElementById('username').value;
+			var myReg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+			
+			if(myReg.test(myname)){
+				return true;}
+			else{
+				alert("Wrong email format.");
+				return false;
+			}
 	}
 </script>
 

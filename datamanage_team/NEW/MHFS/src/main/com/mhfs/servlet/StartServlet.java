@@ -16,7 +16,7 @@ import com.mhfs.service.UserService;
 
 @WebServlet("/StartServlet")
 public class StartServlet extends HttpServlet {
-	private static final long serialVersionUID = 1272194200575717998L;
+	//private static final long serialVersionUID = 1272194200575717998L;
 
 	private UserService userService = new UserService();
 

@@ -111,7 +111,39 @@ public class FileDaoImpl implements FileDao {
 	}
 
 	
-	
+	@Override
+	public boolean recoverFile(String fID) {
+		boolean res = false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.RECOVER);
+			preparedStatement.setInt(1, Integer.parseInt(fID));
+			if (preparedStatement.executeUpdate() != 0) {
+				preparedStatement = connection.prepareStatement(Sql.TOTALLY_DEL);
+				preparedStatement.setInt(1, Integer.parseInt(fID));
+				
+				if(preparedStatement.executeUpdate()!=0) {
+					res = true;
+				}
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return res;
+	}
+
 	@Override
 	public boolean totallyDel(String fID) {
 		boolean res =false;
@@ -383,8 +415,198 @@ public class FileDaoImpl implements FileDao {
 
 	
 
+	@Override
+	public boolean gainlock(String fname) {
+		boolean res=false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.CHECK_LOCK);
+			preparedStatement.setString(1, fname);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				int lockval=rs.getInt(1);
+				if(lockval==1) {
+					System.out.println("the lockval is: "+lockval);
+					res= false;
+				}
+								
+				else {
+					
+					preparedStatement = connection.prepareStatement(Sql.GAIN_LOCK);
+					preparedStatement.setString(1, fname);
+					if(preparedStatement.executeUpdate()!=0)
+						res = true;
+					else {
+						res = false;
+						System.out.println("lock is available but fail to gain");
+					}
+				}
+					
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		
+		return res;
+	}
 
+	@Override
+	public boolean releaselock(String fname) {
+		boolean res=false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.CHECK_LOCK);
+			preparedStatement.setString(1, fname);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				
+				if(rs.getInt(1)==0) { 				//lock is not held
+					res= true;
+					System.out.println("lock is released already");
+				}
+								
+				else {
+					System.out.println("lockval of releaselock is: "+rs.getInt(1));
+					preparedStatement = connection.prepareStatement(Sql.RELEASE_LOCK);
+					preparedStatement.setString(1, fname);
+					if(preparedStatement.executeUpdate() !=0) {
+						res = true;
+						}
+					else {
+						res = false;
+						System.out.println("fail to release");
+					}
+				}
+					
+			}
+			else {
+				res=false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return res;
+	}
 
+	@Override
+	public boolean gainTrashlock(String fID) {
+		boolean res=false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.CHECK_TRASHLOCK);
+			preparedStatement.setInt(1, Integer.parseInt(fID));
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				int lockval=rs.getInt(1);
+				if(lockval==1) {
+					System.out.println("the lockval is: "+lockval);
+					res= false;
+				}
+								
+				else {
+					
+					preparedStatement = connection.prepareStatement(Sql.GAIN_TRASHLOCK);
+					preparedStatement.setInt(1, Integer.parseInt(fID));
+					if(preparedStatement.executeUpdate()!=0)
+						res = true;
+					else {
+						res = false;
+						System.out.println("lock is available but fail to gain");
+					}
+				}
+					
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		
+		return res;
+	}
+
+	@Override
+	public boolean releaseTrashlock(String fID) {
+
+		boolean res=false;
+		Connection connection = JdbcUtil.getConection();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(Sql.CHECK_TRASHLOCK);
+			preparedStatement.setInt(1, Integer.parseInt(fID));
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				
+				if(rs.getInt(1)==0) { 				//lock is not held
+					res= true;
+					System.out.println("trash lock is released already");
+				}
+								
+				else {
+					System.out.println("lockval of releaseTrashlock is: "+rs.getInt(1));
+					preparedStatement = connection.prepareStatement(Sql.RELEASE_TRASHLOCK);
+					preparedStatement.setInt(1, Integer.parseInt(fID));
+					if(preparedStatement.executeUpdate() !=0) {
+						res = true;
+						}
+					else {
+						res = false;
+						System.out.println("fail to release");
+					}
+				}
+					
+			}
+			else {
+				res=false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					connection.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return res;
+	
+	}
+	
 	
 
 }

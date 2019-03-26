@@ -16,6 +16,7 @@ public interface FileDao {
 
 	boolean updateFileBy(File file);
 	
+	boolean recoverFile(String fID);
 	
 	boolean totallyDel(String fID);
 	
@@ -32,4 +33,12 @@ public interface FileDao {
 	File getFileBy(String fname, int pri);
 
 	
+
+	boolean gainlock(String fname);
+
+	boolean releaselock(String fname);
+	
+	boolean gainTrashlock(String fID);
+	
+	boolean releaseTrashlock(String fID);
 }

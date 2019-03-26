@@ -15,21 +15,21 @@ public class UserService {
 	}
 
 	public boolean register(User user) {
-		synchronized (register) {
+	//	synchronized (register) {
 			if (!userDao.checkNameExist(user.getName())) {
 				return userDao.addUser(user);
 			}
 			return false;
-		}
+	//	}
 	}
 
 	public boolean changePwd(String name, String op, String np) {
-		synchronized (changePwd) {
+	//	synchronized (changePwd) {
 			if (userDao.verifyUser(new User(name, op))) {
 				return userDao.changePwd(name, np);
 			}
 			return false;
-		}
+	//	}
 
 	}
 }

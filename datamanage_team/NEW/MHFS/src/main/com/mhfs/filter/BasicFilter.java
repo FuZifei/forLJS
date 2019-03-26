@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BasicFilter extends HttpFilter {
-	private static final long serialVersionUID = 353313918183552636L;
+	//private static final long serialVersionUID = 353313918183552636L;
 
 	@Override
 	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
