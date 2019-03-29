@@ -1,44 +1,60 @@
 package com.example.nnnnew;
 
 
-
+import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
-import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.example.nnnnew.R;
+import android.app.DownloadManager;
+import android.os.Environment;
+import android.webkit.URLUtil;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+
+import java.lang.String;
 
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity  {
     WebView mWebview;
     WebSettings mWebSettings;
+
+    private Context mContext = MainActivity.this;
+
     private ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> uploadMessage;
     public static final int REQUEST_SELECT_FILE = 100;
     private final static int FILECHOOSER_RESULTCODE = 2;
-    TextView beginLoading,endLoading,loading,mtitle;
+
+    public static boolean checkPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -47,15 +63,18 @@ public class MainActivity extends AppCompatActivity {
 
         mWebSettings = mWebview.getSettings();
 
-        mWebview.loadUrl("http://106.15.186.234/mhfs");
+        mWebview.loadUrl("http://106.15.186.234/MHFS");
+       //mWebview.loadUrl("http://100.75.232.8:8080/MHFS");
 
-        // Set permissions to interact with Js
         mWebSettings.setJavaScriptEnabled(true);
-        // Set to allow JS popups
+        mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        mWebSettings.setDomStorageEnabled(true);
+        mWebSettings.setDatabaseEnabled(true);
+
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
 
+        mWebview.requestFocus();
 
-        //Settings are not displayed in the system browser, directly displayed in the current Webview
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -66,15 +85,15 @@ public class MainActivity extends AppCompatActivity {
         mWebSettings.setLoadWithOverviewMode(true);
 
 
-
-        //Set the WebViewClient class
-        mWebview.setWebViewClient(new WebViewClient() {
-            //Set the function before loading
-
-        });
-
-    
-
+        //  Permission check,maybe checkselfpermission is better?
+        if (!checkPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})){
+        // Permission ask
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 111);
+            Log.e("permission","Ask for permission");
+        } else {
+        // if permission is already granted than load url
+            downloadUrl();
+        }
 
 
         mWebview.setWebChromeClient(new WebChromeClient(){
@@ -134,8 +153,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
             }
 
+
         });
     }
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
@@ -166,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Click to return to the previous page instead of exiting the browser
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
@@ -177,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    //destory Webview
+
     @Override
     protected void onDestroy() {
         if (mWebview != null) {
@@ -191,6 +214,53 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+     public void downloadUrl() {
+
+         mWebview.setDownloadListener(new DownloadListener() {
+
+             public void onDownloadStart(String url, String userAgent, String
+                     contentDisposition, String mimetype, long contentLength) {
+
+                 Log.e("DOWNLOAD", "Permission Granted");
+
+                 //change from base64 to http string ,need double check with Fei& LJS
+                 String dlurl = "http://106.15.186.234/MHFS/sys/home.html\n" + url;
+                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(dlurl));
+                 request.setMimeType(mimetype);
+                 request.addRequestHeader("User-Agent", userAgent);
+                 String filename = URLUtil.guessFileName(dlurl, null, null);
+                 request.setTitle(filename);
+                 //File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                 request.allowScanningByMediaScanner();
+                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                 //define a new file in phone storage,i choose the internal stroage as the parent cause sdcard needs more permissions
+                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                 dm.enqueue(request);
+
+                 Toast.makeText(MainActivity.this, "Download Successful", Toast.LENGTH_LONG).show();
+             }
+         });
+     }
 
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 111) {
+            //i guess maybe the value of grantresults has never been changed
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadUrl();
+            } else {
+                //actually when download is happens it just went through all the permissioncheck flow to this toast ,i just don't know why
+                Toast.makeText(MainActivity.this, "The app was not allowed to read your storage.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
+
+
+
+
